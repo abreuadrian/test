@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senha</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000000;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            background: #e7dfdf;
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #f1e9e9;
+            background-color: #050505;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+
+        button:hover {
+            background-color: #423e3e;
+        }
+
+        #password-container {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        #password-display {
+            font-size: 18px;
+            font-weight: bold;
+            color: #0c0b0b;
+        }
+
+        #copy-btn {
+            padding: 5px 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #f1e9e9;
+            background-color: #050505;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #copy-btn:hover {
+            background-color: #423e3e;
+        }
+
+        #generate-btn {
+            display: block;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        async function generatePassword() {
+            const response = await fetch('/generate');
+            const password = await response.text();
+            document.getElementById('password-display').innerText = password;
+            document.getElementById('password-container').style.display = 'flex';
+            document.getElementById('generate-btn').style.display = 'block';
+        }
+
+        function copyToClipboard() {
+            const password = document.getElementById('password-display').innerText;
+            if (password) {
+                navigator.clipboard.writeText(password)
+                    .then(() => {
+                        alert('Senha copiada para a área de transferência!');
+                    })
+                    .catch(err => {
+                        alert('Erro ao copiar senha: ' + err);
+                    });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Senha</h1>
+        <div id="password-container">
+            <p id="password-display"></p>
+            <button id="copy-btn" onclick="copyToClipboard()">Copiar Senha</button>
+        </div>
+        <button id="generate-btn" onclick="generatePassword()">Clique aqui para gerar sua senha</button>
+    </div>
+</body>
+</html>
